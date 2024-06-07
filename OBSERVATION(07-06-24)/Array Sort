@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void sortArray(int nums[], int numsSize) {
+    for (int i = 0; i < numsSize; i++) {
+        if (i % 2 == 0 && nums[i] % 2 != 0) {
+            for (int j = i + 1; j < numsSize; j++) {
+                if (j % 2 == 0 && nums[j] % 2 == 0) {
+                    swap(&nums[i], &nums[j]);
+                    break;
+                }
+            }
+        } else if (i % 2 != 0 && nums[i] % 2 == 0) {
+            for (int j = i + 1; j < numsSize; j++) {
+                if (j % 2 != 0 && nums[j] % 2 != 0) {
+                    swap(&nums[i], &nums[j]);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int nums[] = {4, 2, 5, 7, 6, 1};
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+    sortArray(nums, numsSize);
+
+    printf("Sorted Array: ");
+    for (int i = 0; i < numsSize; i++) {
+        printf("%d ", nums[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
