@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+
+void removeCharacters(char s[]) {
+    // Iterate over each character from 'a' to 'z'
+    for (char c = 'a'; c <= 'z'; c++) {
+        // Find the index of the character in the string
+        int index = -1;
+        for (int i = 0; i < strlen(s); i++) {
+            if (s[i] == c) {
+                index = i;
+                break;
+            }
+        }
+        
+        // If the character is found, remove it from the string
+        if (index != -1) {
+            // Shift subsequent characters to the left
+            for (int i = index; i < strlen(s) - 1; i++) {
+                s[i] = s[i + 1];
+            }
+            // Null-terminate the string
+            s[strlen(s) - 1] = '\0';
+            
+            // Reset index to recheck current character
+            index--;
+        }
+    }
+}
+
+int main() {
+    char s[] = "aabcbbca";
+    removeCharacters(s);
+    printf("Resulting String: %s\n", s);
+    return 0;
+}
