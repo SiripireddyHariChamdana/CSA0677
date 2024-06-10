@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MOD 1000000007
+#define MAX_HATS 40
+#define MAX_PEOPLE 10
+
+int dp[1 << MAX_HATS][MAX_PEOPLE];
+int hats[MAX_HATS][MAX_PEOPLE];
+int n;
+int n_people;
+
+int countWays(int mask, int i) {
+    if (mask == (1 << n) - 1) {
+        return 1;
+    }
+    if (i == MAX_HATS) {
+        return 0;
+    }
+    if (dp[mask][i] != -1) {
+        return dp[mask][i];
+    }
+
+    long long ways = countWays(mask, i + 1) % MOD;
+
+    for (int j = 0; j < n_people; j++) {
+        if (hats[i][j] && !(mask & (1 << j))) {
+            ways += countWays(mask | (1 << j), i + 1);
+            ways %= MOD;
+        }
+    }
+
+    dp[mask][i] = ways;
+    return ways;
+}
+
+int main() {
+    memset(dp, -1, sizeof(dp));
+
+    // Example input
+    n_people = 3;
+    n = 3;
+    hats[0][0] = 1;
+    hats[1][0] = 2;
+    hats[2][0] = 3;
+
+    int ways = countWays(0, 0);
+    printf("Number of ways: %d\n", ways);
+
+    return 0;
+}
