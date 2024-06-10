@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_CITIES 1001
+
+char* destCity(char*** paths, int pathsSize, int* pathsColSize) {
+    char* outCities[MAX_CITIES];
+    char* inCities[MAX_CITIES];
+    memset(outCities, 0, sizeof(outCities));
+    memset(inCities, 0, sizeof(inCities));
+
+    for (int i = 0; i < pathsSize; i++) {
+        outCities[i] = paths[i][0];
+        inCities[i] = paths[i][1];
+    }
+
+    for (int i = 0; i < pathsSize; i++) {
+        int isDest = 1;
+        for (int j = 0; j < pathsSize; j++) {
+            if (strcmp(inCities[i], outCities[j]) == 0) {
+                isDest = 0;
+                break;
+            }
+        }
+        if (isDest) {
+            return inCities[i];
+        }
+    }
+
+    return NULL; // No destination city found
+}
+
+int main() {
+    char* path1[] = {"London", "New York"};
+    char* path2[] = {"New York", "Lima"};
+    char* path3[] = {"Lima", "Santiago"};
+    char** paths[] = {path1, path2, path3};
+    int pathsSize = 3;
+    int pathsColSize[] = {2, 2, 2};
+
+    char* destination = destCity(paths, pathsSize, pathsColSize);
+    if (destination != NULL) {
+        printf("Destination City: %s\n", destination);
+    } else {
+        printf("No destination city found.\n");
+    }
+
+    return 0;
+}
