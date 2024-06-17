@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+int minOperationsToSort(int nums[], int n) {
+    int operations = 0;
+    int emptyPos = -1;
+
+    for (int i = 0; i < n; i++) {
+        if (nums[i] == 0) {
+            emptyPos = i;
+            break;
+        }
+    }
+
+    if (emptyPos == -1) {
+        printf("Error: Empty space not found in the array.\n");
+        return -1; // Error handling for missing empty space
+    }
+
+    for (int i = 1; i < n; i++) {
+        if (nums[i] != i) {
+            if (nums[i] == 0) {
+                emptyPos = i;
+            } else {
+                int temp = nums[i];
+                nums[i] = 0;
+                nums[emptyPos] = temp;
+                emptyPos = i;
+                operations++;
+            }
+        }
+    }
+
+    return operations;
+}
+
+int main() {
+    int nums[] = {4, 2, 0, 3, 1};
+    int n = sizeof(nums) / sizeof(nums[0]);
+
+    int minOps = minOperationsToSort(nums, n);
+
+    if (minOps != -1) {
+        printf("Minimum operations needed to sort nums: %d\n", minOps);
+    }
+
+    return 0;
+}
