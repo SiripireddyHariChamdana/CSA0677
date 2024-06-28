@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to calculate factorial
+int factorial(int n) {
+    if (n == 0) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+// Function to compute permutations
+int computePermutations(int n, int r) {
+    if (n < r) {
+        fprintf(stderr, "Error: n must be greater than or equal to r.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return factorial(n) / factorial(n - r);
+}
+
+int main() {
+    int n = 5; // Example value of n
+    int r = 3; // Example value of r
+
+    // Compute permutations
+    int result = computePermutations(n, r);
+
+    printf("Permutations of %d taken %d at a time: %d\n", n, r, result);
+
+    return 0;
+}
