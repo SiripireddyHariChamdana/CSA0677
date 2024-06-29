@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+// Function to calculate maximum robbery using House Robber approach
+int maxRobbery(int* nums, int start, int end) {
+    if (start > end)
+        return 0;
+    
+    int prev2 = 0; // Represents nums[i-2]
+    int prev1 = nums[start]; // Represents nums[i-1]
+
+    for (int i = start + 1; i <= end; ++i) {
+        int current = nums[i] + prev2; // Robbing current house i
+        prev2 = prev1; // Move prev1 to prev2 for next iteration
+        prev1 = (current > prev1) ? current : prev1; // Update prev1 to maximum between current and prev1
+    }
+
+    return prev1; // Return the maximum money that can be robbed
+}
+
+// Function to calculate maximum money that can be robbed from circular houses
+int rob(int* nums, int numsSize) {
+    if (numsSize == 0)
+        return 0;
+    if (numsSize == 1)
+        return nums[0];
+
+    // Two cases: either rob from house 0 to n-2 or from house 1 to n-1
+    int max1 = maxRobbery(nums, 0, numsSize - 2);
+    int max2 = maxRobbery(nums, 1, numsSize - 1);
+
+    // Return the maximum of these two cases
+    return (max1 > max2) ? max1 : max2;
+}
+
+// Main function for testing
+int main() {
+    int nums1[] = {2, 3, 2};
+    int nums2[] = {1, 2, 3, 1};
+
+    int result1 = rob(nums1, sizeof(nums1) / sizeof(nums1[0]));
+    int result2 = rob(nums2, sizeof(nums2) / sizeof(nums2[0]));
+
+    printf("Input: nums = [2, 3, 2]\n");
+    printf("Output: The maximum money you can rob without alerting the police is %d\n", result1);
+
+    printf("Input: nums = [1, 2, 3, 1]\n");
+    printf("Output: The maximum money you can rob without alerting the police is %d\n", result2);
+
+    return 0;
+}
