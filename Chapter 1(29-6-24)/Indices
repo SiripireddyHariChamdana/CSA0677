@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int* calculateIndices(int* nums1, int n, int* nums2, int m) 
+{
+    int answer1 = 0, answer2 = 0;
+    
+    if (nums1 == NULL || nums2 == NULL || n <= 0 || m <= 0) 
+{
+        printf("Invalid input arrays.\n");
+        return NULL;
+    }
+    
+    for (int i = 0; i < n; i++) 
+{
+        for (int j = 0; j < m; j++)
+{
+            if (nums1[i] == nums2[j]) 
+{
+                answer1++;
+                break;
+            }
+        }
+    }
+    
+    for (int i = 0; i < m; i++) 
+{
+        for (int j = 0; j < n; j++) 
+{
+            if (nums2[i] == nums1[j]) 
+{
+                answer2++;
+                break;
+            }
+        }
+    }
+    
+    int* result = (int*)malloc(2 * sizeof(int));
+    result[0] = answer1;
+    result[1] = answer2;
+    
+    return result;
+}
+
+int main()
+{
+    int nums1[] = {4, 3, 2, 3, 1};
+    int nums2[] = {2, 2, 5, 2, 3, 6};
+    int n = sizeof(nums1) / sizeof(nums1[0]);
+    int m = sizeof(nums2) / sizeof(nums2[0]);
+    
+    int* result = calculateIndices(nums1, n, nums2, m);
+    
+    if (result != NULL)
+{
+        printf("Output: [%d, %d]\n", result[0], result[1]);
+        free(result);
+    }
+    
+    return 0;
+}
