@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <limits.h>
+#include <stdbool.h>
+
+#define N 4 // Number of cities
+
+// Structure to represent a city with x and y coordinates
+struct City {
+    int x;
+    int y;
+};
+
+// Calculate Euclidean distance between two cities
+double distance(struct City city1, struct City city2) {
+    return sqrt(pow(city1.x - city2.x, 2) + pow(city1.y - city2.y, 2));
+}
+
+// Function to solve TSP using exhaustive search
+void tsp(struct City cities[N]) {
+    int path[N];
+    bool visited[N];
+    double minDistance = INT_MAX;
+    int minPath[N];
+
+    for (int i = 0; i < N; i++) {
+        visited[i] = false;
+    }
+
+    visited[0] = true;
+    path[0] = 0;
+
+    // Recursive function to find the shortest path
+    void findPath(int pos, int count, double curDistance) {
+        if (count == N) {
+            if (curDistance < minDistance) {
+                minDistance = curDistance;
+                for (int i = 0; i < N; i++) {
+                    minPath[i] = path[i];
+                }
+            }
+            return;
+        }
+
+        for (int i = 0; i < N; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                path[pos] = i;
+                findPath(pos + 1, count + 1, curDistance + distance(cities[path[pos - 1]], cities[i]));
+                visited[i] = false;
+            }
+        }
+    }
+
+    findPath(1, 1, 0);
+
+    // Output the shortest path and distance
+    printf("Shortest Distance: %lf\n", minDistance);
+    printf("Shortest Path: ");
+    for (int i = 0; i < N; i++) {
+        printf("%d ", minPath[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    struct City cities[N] = {{0, 0}, {1, 2}, {3, 1}, {2, 3}};
+
+    tsp(cities);
+
+    return 0;
+}
