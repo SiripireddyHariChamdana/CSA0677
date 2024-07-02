@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+// Function to swap two elements in an array
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Function to partition the array around a pivot element
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+// Function to find the k-th smallest element using Median of Medians algorithm
+int median_of_medians(int arr[], int low, int high, int k) {
+    if (k > 0 && k <= high - low + 1) {
+        int n = high - low + 1;
+        int median[(n + 4) / 5];
+        int i;
+        for (i = 0; i < n / 5; i++) {
+            median[i] = arr[low + i * 5 + 2];
+        }
+        if (i * 5 < n) {
+            median[i] = arr[low + i * 5 + 2];
+            i++;
+        }
+
+        int med_of_med = (i == 1) ? median[i - 1] : median_of_medians(median, 0, i - 1, i / 2);
+
+        int pos = partition(arr, low, high);
+        if (pos - low == k - 1) {
+            return arr[pos];
+        }
+        if (pos - low > k - 1) {
+            return median_of_medians(arr, low, pos - 1, k);
+        }
+        return median_of_medians(arr, pos + 1, high, k - pos + low - 1);
+    }
+    return -1; // Return -1 if k is out of range
+}
+
+int main() {
+    int arr1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int k1 = 6;
+    int n1 = sizeof(arr1) / sizeof(arr1[0]);
+    int result1 = median_of_medians(arr1, 0, n1 - 1, k1);
+    printf("k-th smallest element in arr1: %d\n", result1);
+
+    int arr2[] = {23, 17, 31, 44, 55, 21, 20, 18, 19, 27};
+    int k2 = 5;
+    int n2 = sizeof(arr2) / sizeof(arr2[0]);
+    int result2 = median_of_medians(arr2, 0, n2 - 1, k2);
+    printf("k-th smallest element in arr2: %d\n", result2);
+
+    return 0;
+}
