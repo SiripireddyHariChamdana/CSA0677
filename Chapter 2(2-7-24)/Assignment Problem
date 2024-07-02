@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#define MAX_WORKERS 10
+#define MAX_TASKS 10
+
+int cost[MAX_WORKERS][MAX_TASKS];
+int min_cost = INT_MAX;
+int optimal_assignment[MAX_WORKERS];
+int current_assignment[MAX_WORKERS];
+int used_workers[MAX_WORKERS];
+
+void total_cost(int assignment[], int n) {
+    int total = 0;
+    for (int i = 0; i < n; i++) {
+        total += cost[i][assignment[i]];
+    }
+    if (total < min_cost) {
+        min_cost = total;
+        for (int i = 0; i < n; i++) {
+            optimal_assignment[i] = assignment[i];
+        }
+    }
+}
+
+void generate_permutations(int n, int index) {
+    if (index == n) {
+        total_cost(current_assignment, n);
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (!used_workers[i]) {
+            used_workers[i] = 1;
+            current_assignment[index] = i;
+            generate_permutations(n, index + 1);
+            used_workers[i] = 0;
+        }
+    }
+}
+
+void assignment_problem(int cost_matrix[MAX_WORKERS][MAX_TASKS], int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cost[i][j] = cost_matrix[i][j];
+        }
+    }
+
+    generate_permutations(n, 0);
+
+    printf("Optimal Assignment: ");
+    for (int i = 0; i < n; i++) {
+        printf("(worker %d, task %d) ", i + 1, optimal_assignment[i] + 1);
+    }
+    printf("\nTotal Cost: %d\n", min_cost);
+}
+
+int main() {
+    int cost_matrix_simple[MAX_WORKERS][MAX_TASKS] = {
+        {3, 10, 7},
+        {8, 5, 12},
+        {4, 6, 9}
+    };
+
+    int cost_matrix_complex[MAX_WORKERS][MAX_TASKS] = {
+        {15, 9, 4},
+        {8, 7, 18},
+        {6, 12, 11}
+    };
+
+    printf("Test Case 1:\n");
+    assignment_problem(cost_matrix_simple, 3);
+
+    printf("\nTest Case 2:\n");
+    assignment_problem(cost_matrix_complex, 3);
+
+    return 0;
+}
