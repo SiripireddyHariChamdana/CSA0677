@@ -1,0 +1,63 @@
+#include <stdio.h>
+
+int total_value(int items[], int values[], int n) {
+    int total = 0;
+    for (int i = 0; i < n; i++) {
+        total += values[items[i]];
+    }
+    return total;
+}
+
+int is_feasible(int items[], int weights[], int capacity, int n) {
+    int total_weight = 0;
+    for (int i = 0; i < n; i++) {
+        total_weight += weights[items[i]];
+    }
+    return total_weight <= capacity;
+}
+
+void knapsack_solver(int items[], int weights[], int values[], int capacity, int n) {
+    int max_value = 0;
+    int best_set[n];
+    
+    for (int i = 1; i < (1 << n); i++) {
+        int current_set[n];
+        int current_size = 0;
+        
+        for (int j = 0; j < n; j++) {
+            if (i & (1 << j)) {
+                current_set[current_size++] = j;
+            }
+        }
+        
+        if (is_feasible(current_set, weights, capacity, current_size)) {
+            int current_value = total_value(current_set, values, current_size);
+            if (current_value > max_value) {
+                max_value = current_value;
+                for (int k = 0; k < current_size; k++) {
+                    best_set[k] = current_set[k];
+                }
+            }
+        }
+    }
+    
+    printf("Selected Items: ");
+    for (int i = 0; i < n; i++) {
+        if (best_set[i] != 0) {
+            printf("%d ", best_set[i]);
+        }
+    }
+    printf("\nTotal Value: %d\n", max_value);
+}
+
+int main() {
+    int items[] = {0, 1, 2, 3};
+    int weights[] = {1, 2, 3, 4};
+    int values[] = {2, 4, 6, 3};
+    int capacity = 6;
+    int n = 4;
+    
+    knapsack_solver(items, weights, values, capacity, n);
+    
+    return 0;
+}
