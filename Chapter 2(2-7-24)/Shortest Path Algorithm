@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <math.h>
+
+typedef struct {
+    int x;
+    int y;
+} City;
+
+double calculateDistance(City city1, City city2) {
+    return sqrt(pow(city2.x - city1.x, 2) + pow(city2.y - city1.y, 2));
+}
+
+void findShortestPath(City cities[], int numCities) {
+    double shortestDistance = 0;
+    int shortestPath[numCities];
+    
+    // Calculate shortest path
+    // (Algorithm implementation goes here)
+    
+    printf("Shortest Distance: %f\n", shortestDistance);
+    printf("Shortest Path: ");
+    for (int i = 0; i < numCities; i++) {
+        printf("(%d, %d)", cities[shortestPath[i]].x, cities[shortestPath[i]].y);
+        if (i < numCities - 1) {
+            printf(" -> ");
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    City test1[] = {{1, 2}, {4, 5}, {7, 1}, {3, 6}};
+    City test2[] = {{2, 4}, {8, 1}, {1, 7}, {6, 3}, {5, 9}};
+    
+    findShortestPath(test1, 4);
+    findShortestPath(test2, 5);
+    
+    return 0;
+}
