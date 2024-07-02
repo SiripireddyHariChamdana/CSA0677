@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+void findMinMax(int arr[], int n) {
+    if (n <= 0) {
+        printf("Invalid array size.\n");
+        return;
+    }
+
+    int min = arr[0];
+    int max = arr[n - 1];
+
+    printf("Input Array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    printf("Min = %d, Max = %d\n", min, max);
+}
+
+int main() {
+    int arr1[] = {2, 4, 6, 8, 10, 12, 14, 18};
+    int n1 = sizeof(arr1) / sizeof(arr1[0]);
+    findMinMax(arr1, n1);
+
+    int arr2[] = {11, 13, 15, 17, 19, 21, 23, 35, 37};
+    int n2 = sizeof(arr2) / sizeof(arr2[0]);
+    findMinMax(arr2, n2);
+
+    int arr3[] = {22, 34, 35, 36, 43, 67, 12, 13, 15, 17};
+    int n3 = sizeof(arr3) / sizeof(arr3[0]);
+    findMinMax(arr3, n3);
+
+    return 0;
+}
