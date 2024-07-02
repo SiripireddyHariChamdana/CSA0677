@@ -1,0 +1,85 @@
+#include <stdio.h>
+
+// Function to swap two elements in an array
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Function to partition the array around a pivot element
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+// Function to find the k-th smallest element using Median of Medians algorithm
+int kthSmallest(int arr[], int low, int high, int k) {
+    if (k > 0 && k <= high - low + 1) {
+        int n = high - low + 1;
+        int median[(n + 4) / 5];
+        int i;
+        for (i = 0; i < n / 5; i++) {
+            median[i] = arr[low + i * 5 + 2];
+        }
+        if (i * 5 < n) {
+            median[i] = arr[low + i * 5 + 2];
+            i++;
+        }
+
+        int medOfMed = (i == 1) ? median[i - 1] : kthSmallest(median, 0, i - 1, i / 2);
+
+        int pos = partition(arr, low, high);
+        if (pos - low == k - 1) {
+            return arr[pos];
+        }
+        if (pos - low > k - 1) {
+            return kthSmallest(arr, low, pos - 1, k);
+        }
+        return kthSmallest(arr, pos + 1, high, k - pos + low - 1);
+    }
+    return -1; // Return -1 for invalid input
+}
+
+int main() {
+    int arr1[] = {12, 3, 5, 7, 19};
+    int n1 = sizeof(arr1) / sizeof(arr1[0]);
+    int k1 = 2;
+    int result1 = kthSmallest(arr1, 0, n1 - 1, k1);
+    if (result1 != -1) {
+        printf("kth smallest element for arr1: %d\n", result1);
+    } else {
+        printf("Invalid input for arr1\n");
+    }
+
+    int arr2[] = {12, 3, 5, 7, 4, 19, 26};
+    int n2 = sizeof(arr2) / sizeof(arr2[0]);
+    int k2 = 3;
+    int result2 = kthSmallest(arr2, 0, n2 - 1, k2);
+    if (result2 != -1) {
+        printf("kth smallest element for arr2: %d\n", result2);
+    } else {
+        printf("Invalid input for arr2\n");
+    }
+
+    int arr3[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int n3 = sizeof(arr3) / sizeof(arr3[0]);
+    int k3 = 6;
+    int result3 = kthSmallest(arr3, 0, n3 - 1, k3);
+    if (result3 != -1) {
+        printf("kth smallest element for arr3: %d\n", result3);
+    } else {
+        printf("Invalid input for arr3\n");
+    }
+
+    return 0;
+}
