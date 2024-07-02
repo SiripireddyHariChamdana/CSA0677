@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+void meetInTheMiddle(int set[], int n, int targetSum) {
+    int mid = n / 2;
+    int leftSize = 1 << mid;
+    int rightSize = 1 << (n - mid);
+    
+    int leftSubset[leftSize], rightSubset[rightSize];
+    
+    // Generate all possible subsets for the left half
+    for (int i = 0; i < leftSize; i++) {
+        int sum = 0;
+        for (int j = 0; j < mid; j++) {
+            if (i & (1 << j)) {
+                sum += set[j];
+            }
+        }
+        leftSubset[i] = sum;
+    }
+    
+    // Generate all possible subsets for the right half
+    for (int i = 0; i < rightSize; i++) {
+        int sum = 0;
+        for (int j = 0; j < n - mid; j++) {
+            if (i & (1 << j)) {
+                sum += set[mid + j];
+            }
+        }
+        rightSubset[i] = sum;
+    }
+    
+    // Sort the rightSubset array
+    qsort(rightSubset, rightSize, sizeof(int), compare);
+    
+    int closestSum = INT_MAX;
+    int closestSubsetLeft, closestSubsetRight;
+    
+    // Find the closest sum
+    for (int i = 0; i < leftSize; i++) {
+        int complement = targetSum - leftSubset[i];
+        int* ptr = bsearch(&complement, rightSubset, rightSize, sizeof(int), compare);
+        if (ptr != NULL) {
+            int total = leftSubset[i] + *ptr;
+            if (abs(targetSum - total) < abs(targetSum - closestSum)) {
+                closestSum = total;
+                closestSubsetLeft = leftSubset[i];
+                closestSubsetRight = *ptr;
+            }
+        }
+    }
+    
+    printf("Closest Subset Pair: %d, %d\n", closestSubsetLeft, closestSubsetRight);
+}
+
+int compare(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int main() {
+    int set1[] = {45, 34, 4, 12, 5, 2};
+    int targetSum1 = 42;
+    int n1 = sizeof(set1) / sizeof(set1[0]);
+    
+    int set2[] = {1, 3, 2, 7, 4, 6};
+    int targetSum2 = 10;
+    int n2 = sizeof(set2) / sizeof(set2[0]);
+    
+    meetInTheMiddle(set1, n1, targetSum1);
+    meetInTheMiddle(set2, n2, targetSum2);
+    
+    return 0;
+}
