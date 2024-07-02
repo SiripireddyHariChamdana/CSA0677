@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+// Function to print the array
+void printArray(int arr[], int size) {
+    printf("[");
+    for (int i = 0; i < size; i++) {
+        printf("%d", arr[i]);
+        if (i < size - 1) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+}
+
+// Optimized Bubble Sort function
+void bubbleSort(int arr[], int size) {
+    int i, j, temp;
+    bool swapped;
+    for (i = 0; i < size - 1; i++) {
+        swapped = false;
+        for (j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j + 1]
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        // If no two elements were swapped in the inner loop, the array is sorted
+        if (!swapped) {
+            break;
+        }
+    }
+}
+
+int main() {
+    // Test case 1: Random array
+    int arr1[] = {64, 25, 12, 22, 11};
+    int size1 = sizeof(arr1) / sizeof(arr1[0]);
+    printf("Input: ");
+    printArray(arr1, size1);
+    bubbleSort(arr1, size1);
+    printf("Output: ");
+    printArray(arr1, size1);
+
+    // Test case 2: Random array
+    int arr2[] = {29, 10, 14, 37, 13};
+    int size2 = sizeof(arr2) / sizeof(arr2[0]);
+    printf("Input: ");
+    printArray(arr2, size2);
+    bubbleSort(arr2, size2);
+    printf("Output: ");
+    printArray(arr2, size2);
+
+    // Test case 3: Random array
+    int arr3[] = {3, 5, 2, 1, 4};
+    int size3 = sizeof(arr3) / sizeof(arr3[0]);
+    printf("Input: ");
+    printArray(arr3, size3);
+    bubbleSort(arr3, size3);
+    printf("Output: ");
+    printArray(arr3, size3);
+
+    // Test case 4: Already sorted array
+    int arr4[] = {1, 2, 3, 4, 5};
+    int size4 = sizeof(arr4) / sizeof(arr4[0]);
+    printf("Input: ");
+    printArray(arr4, size4);
+    bubbleSort(arr4, size4);
+    printf("Output: ");
+    printArray(arr4, size4);
+
+    // Test case 5: Reverse sorted array
+    int arr5[] = {5, 4, 3, 2, 1};
+    int size5 = sizeof(arr5) / sizeof(arr5[0]);
+    printf("Input: ");
+    printArray(arr5, size5);
+    bubbleSort(arr5, size5);
+    printf("Output: ");
+    printArray(arr5, size5);
+
+    return 0;
+}
