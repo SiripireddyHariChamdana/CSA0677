@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+// Function to check if one string is a substring of another
+bool isSubstring(char *sub, char *str) {
+    return strstr(str, sub) != NULL;
+}
+
+// Function to find all substrings in the array
+void findSubstrings(char *words[], int size) {
+    bool found = false;
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (i != j && isSubstring(words[i], words[j])) {
+                printf("%s ", words[i]);
+                found = true;
+                break;
+            }
+        }
+    }
+    if (!found) {
+        printf("[]");
+    }
+    printf("\n");
+}
+
+int main() {
+    // Example 1
+    char *words1[] = {"mass", "as", "hero", "superhero"};
+    int size1 = sizeof(words1) / sizeof(words1[0]);
+    printf("Example 1:\n");
+    printf("Input: words = [\"mass\", \"as\", \"hero\", \"superhero\"]\n");
+    printf("Output: ");
+    findSubstrings(words1, size1);
+
+    // Example 2
+    char *words2[] = {"leetcode", "et", "code"};
+    int size2 = sizeof(words2) / sizeof(words2[0]);
+    printf("Example 2:\n");
+    printf("Input: words = [\"leetcode\", \"et\", \"code\"]\n");
+    printf("Output: ");
+    findSubstrings(words2, size2);
+
+    // Example 3
+    char *words3[] = {"blue", "green", "bu"};
+    int size3 = sizeof(words3) / sizeof(words3[0]);
+    printf("Example 3:\n");
+    printf("Input: words = [\"blue\", \"green\", \"bu\"]\n");
+    printf("Output: ");
+    findSubstrings(words3, size3);
+
+    return 0;
+}
