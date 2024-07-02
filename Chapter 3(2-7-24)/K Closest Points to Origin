@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+// Structure to represent a point
+struct Point {
+    int x, y;
+};
+
+// Function to calculate the Euclidean distance of a point from the origin
+double distance(struct Point p) {
+    return sqrt(p.x * p.x + p.y * p.y);
+}
+
+// Function to swap two points
+void swap(struct Point* a, struct Point* b) {
+    struct Point temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Function to partition the array based on distances
+int partition(struct Point points[], int low, int high) {
+    double pivot = distance(points[high]);
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (distance(points[j]) < pivot) {
+            i++;
+            swap(&points[i], &points[j]);
+        }
+    }
+    swap(&points[i + 1], &points[high]);
+    return i + 1;
+}
+
+// Function to perform quicksort on the array of points
+void quicksort(struct Point points[], int low, int high) {
+    if (low < high) {
+        int pi = partition(points, low, high);
+        quicksort(points, low, pi - 1);
+        quicksort(points, pi + 1, high);
+    }
+}
+
+// Function to find k closest points to the origin
+struct Point* kClosest(struct Point* points, int pointsSize, int k, int* returnSize) {
+    quicksort(points, 0, pointsSize - 1);
+    *returnSize = k;
+    return points;
+}
+
+int main() {
+    struct Point points[] = {{1, 3}, {-2, 2}, {5, 8}, {0, 1}};
+    int k = 2;
+    int pointsSize = sizeof(points) / sizeof(points[0]);
+    int returnSize;
+
+    struct Point* closestPoints = kClosest(points, pointsSize, k, &returnSize);
+
+    printf("Closest Points to Origin:\n");
+    for (int i = 0; i < k; i++) {
+        printf("[%d, %d] ", closestPoints[i].x, closestPoints[i].y);
+    }
+
+    return 0;
+}
