@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+// Function to print the array
+void printArray(int arr[], int size) {
+    printf("[");
+    for (int i = 0; i < size; i++) {
+        printf("%d", arr[i]);
+        if (i < size - 1) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+}
+
+// Function to sort the array using Selection Sort
+void selectionSort(int arr[], int size) {
+    int i, j, minIndex, temp;
+    for (i = 0; i < size - 1; i++) {
+        minIndex = i;
+        for (j = i + 1; j < size; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        // Swap the found minimum element with the first element
+        temp = arr[minIndex];
+        arr[minIndex] = arr[i];
+        arr[i] = temp;
+    }
+}
+
+int main() {
+    // Test case 1: Random array
+    int arr1[] = {5, 2, 9, 1, 5, 6};
+    int size1 = sizeof(arr1) / sizeof(arr1[0]);
+    printf("Input: ");
+    printArray(arr1, size1);
+    selectionSort(arr1, size1);
+    printf("Output: ");
+    printArray(arr1, size1);
+
+    // Test case 2: Reverse sorted array
+    int arr2[] = {10, 8, 6, 4, 2};
+    int size2 = sizeof(arr2) / sizeof(arr2[0]);
+    printf("Input: ");
+    printArray(arr2, size2);
+    selectionSort(arr2, size2);
+    printf("Output: ");
+    printArray(arr2, size2);
+
+    // Test case 3: Already sorted array
+    int arr3[] = {1, 2, 3, 4, 5};
+    int size3 = sizeof(arr3) / sizeof(arr3[0]);
+    printf("Input: ");
+    printArray(arr3, size3);
+    selectionSort(arr3, size3);
+    printf("Output: ");
+    printArray(arr3, size3);
+
+    return 0;
+}
