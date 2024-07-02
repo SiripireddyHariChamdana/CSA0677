@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int findKthMissing(int arr[], int size, int k) {
+    int missingCount = 0, current = 1, index = 0;
+
+    while (missingCount < k) {
+        if (index < size && arr[index] == current) {
+            // If current element is present in array, move to the next element in the array
+            index++;
+        } else {
+            // If current element is missing, increment the missing count
+            missingCount++;
+        }
+        // Move to the next positive integer
+        current++;
+    }
+
+    // Return the k-th missing positive integer
+    return current - 1;
+}
+
+int main() {
+    // Example 1
+    int arr1[] = {2, 3, 4, 7, 11};
+    int size1 = sizeof(arr1) / sizeof(arr1[0]);
+    int k1 = 5;
+    printf("Example 1:\n");
+    printf("Input: arr = [2, 3, 4, 7, 11], k = %d\n", k1);
+    printf("Output: %d\n", findKthMissing(arr1, size1, k1));
+
+    // Example 2
+    int arr2[] = {1, 2, 3, 4};
+    int size2 = sizeof(arr2) / sizeof(arr2[0]);
+    int k2 = 2;
+    printf("Example 2:\n");
+    printf("Input: arr = [1, 2, 3, 4], k = %d\n", k2);
+    printf("Output: %d\n", findKthMissing(arr2, size2, k2));
+
+    return 0;
+}
