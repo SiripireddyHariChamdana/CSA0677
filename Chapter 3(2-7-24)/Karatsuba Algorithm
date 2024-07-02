@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <math.h>
+
+// Function to calculate the number of digits in a number
+int numDigits(int num) {
+    return (num == 0) ? 1 : (int)log10(num) + 1;
+}
+
+// Karatsuba algorithm for multiplication
+int karatsuba(int x, int y) {
+    if (x < 10 || y < 10) {
+        return x * y;
+    }
+
+    int n = fmax(numDigits(x), numDigits(y));
+    int m = (int)ceil(n / 2.0);
+
+    int p = (int)pow(10, m);
+
+    int a = x / p;
+    int b = x % p;
+    int c = y / p;
+    int d = y % p;
+
+    int ac = karatsuba(a, c);
+    int bd = karatsuba(b, d);
+    int ad_bc = karatsuba(a + b, c + d) - ac - bd;
+
+    return ac * (int)pow(10, 2 * m) + ad_bc * (int)pow(10, m) + bd;
+}
+
+int main() {
+    int x = 1234;
+    int y = 5678;
+
+    int result = karatsuba(x, y);
+
+    printf("Result of %d * %d = %d\n", x, y, result);
+
+    return 0;
+}
